@@ -1,31 +1,23 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Getting Started Extension's Popup</title>
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
-
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
-    <script src="popup.js"></script>
-  </head>
-  <body>
-  </body>
+    <head>
+	   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	   <title>Bookmarks</title>
+        <link rel="stylesheet" href="http://pierrechanel-gauthier.com/lib/bootstrap/css/bootstrap.css" type="text/css" />
+	   <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="jQuery.js"></script>
+        <script src="popup.js"></script>
+    </head>
+    <body>
+	   <div class="nav">
+		  <div class="btn"><i class="fa fa-reply-all"><<</i></div>
+		  <div class="btn"><i class="fa fa-reply"><</i></div>
+		  <span id="currentFolder"></span>
+		  <div class="btn"><i class="fa fa-forward">></i></div>
+		  <div class="btn"><i class="fa fa-forward-all">>></i></div>
+	   </div>
+	   <div id="folderWrapper">
+		  <input type="text" id="addFolder" class="input" placeholder="New folder" />
+	   </div>
+    </body>
 </html>
-

@@ -1,0 +1,23 @@
+body {
+    padding: 10px;
+}
+div#folderWrapper {
+    width: 300px;
+    text-align: center;
+}
+input#addFolder {
+    margin: 0;
+    width: 200px;
+    height : 30px;
+    display: block;
+    margin: 5px 50px;
+    box-sizing: border-box;
+}
+div.folder {
+     display: block;
+	margin: 5px 50px;
+}
+div.nav {
+    text-align: center;
+    margin-top: 15px;
+}
