@@ -1,6 +1,9 @@
 body {
     padding: 10px;
 }
+#currentFolder {
+    font-weight : bold;
+}
 div#folderWrapper {
     width: 300px;
     text-align: center;
