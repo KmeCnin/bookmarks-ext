@@ -98,6 +98,7 @@ function displayFolders() {
 }
 
 function getChildrenFromCurrentFolder(tree, targetFolder) {
+    console.log(tree);
     // Find recursivly all direct children of targeted folder
     if (targetFolder == tree.id) {
 	   return tree.folders;
