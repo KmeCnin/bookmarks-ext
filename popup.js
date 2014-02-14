@@ -92,24 +92,23 @@ function displayFolders() {
     var folders = getChildrenFromCurrentFolder(tree, currentFolder.id);
     $('#currentFolder').html(currentFolder.name);
     if (folders != null)
-	   for (i = folders.length-1; i >= 0; i--)
+	   for (var i = folders.length-1; i >= 0; i--)
 		  $('#folderWrapper').prepend('<div data-id="'+folders[i]['id']+'" class="btn folder">'+folders[i]['name']+'</div>');
 //    console.log(getBreadcrumb(tree, currentFolder.id, []));
 }
 
 function getChildrenFromCurrentFolder(tree, targetFolder) {
-    console.log(tree); // caca
     // Find recursivly all direct children of targeted folder
     if (targetFolder == tree.id) {
 	   return tree.folders;
-    } else if (tree.folders != null) {
-	   var folders = null;
-	   for (i = 0; folders == null && i < tree.folders.length; i++) {
+    } else if (tree.folders.length > 0) {
+	   var folders = [];
+	   for (var i = 0; folders.length == 0 && i < tree.folders.length; i++) {
 		  folders = getChildrenFromCurrentFolder(tree.folders[i], targetFolder);
 	   }
 	   return folders;
     }
-    return null;
+    return [];
 }
 
 function getBreadcrumb(tree, targetFolder, breadcrumb) {
@@ -117,6 +116,6 @@ function getBreadcrumb(tree, targetFolder, breadcrumb) {
     breadcrumb.push({'id': tree['id'], 'name': tree['name']})
     if (targetFolder == tree['id'])
 	   return breadcrumb;
-    for (i = 0; i < tree['folders'].length; i++)
+    for (var i = 0; i < tree['folders'].length; i++)
 	   return getBreadcrumb(tree['folders'][i], targetFolder, breadcrumb);
 }
