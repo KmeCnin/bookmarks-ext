@@ -28,3 +28,6 @@ div.nav {
 hr {
     margin : 5px 0px;
 }
+.breadcrumb li {
+    cursor: pointer;
+}
