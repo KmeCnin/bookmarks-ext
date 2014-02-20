@@ -4,8 +4,19 @@
     "name": "Bookmarks",
     "description": "Do not forget any information anymore",
     "version": "1.0",
-
-    "permissions": [],
+    "background": {
+        "persistent":true,
+        "page": "background.html"
+    },
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "tabs"
+    ],
+    "content_scripts": [{
+        "js": ["app.js"],
+        "matches": ["http://*/*", "https://*/*"]
+    }],
     "browser_action": {
 	   "default_icon": "icon.png",
 	   "default_popup": "popup.html"
