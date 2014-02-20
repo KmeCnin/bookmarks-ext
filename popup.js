@@ -82,7 +82,7 @@ $(document).ready(function() {
     displayFolders();
     displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
     
-    $(document).on("click", ".goFolder", function() {
+    $(document).on("click", ".goFolder", function() { 
 	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
 	   displayFolders();
 	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
