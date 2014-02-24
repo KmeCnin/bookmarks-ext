@@ -6,7 +6,7 @@
     "version": "1.0",
     "background": {
         "persistent":true,
-        "page": "background.html"
+        "page": "pages/background.html"
     },
     "permissions": [
         "http://*/*",
@@ -14,11 +14,11 @@
         "tabs"
     ],
     "content_scripts": [{
-        "js": ["app.js"],
+        "js": ["js/app.js"],
         "matches": ["http://*/*", "https://*/*"]
     }],
     "browser_action": {
-	   "default_icon": "icon.png",
-	   "default_popup": "popup.html"
+	   "default_icon": "ressources/icon.png",
+	   "default_popup": "pages/index.html"
     }
 }
