@@ -3,94 +3,45 @@ var currentFolder = null;
 $(document).ready(function() {
     // Hard token
     var token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
-    // Get global tree from database
-    $.ajax({
-	   url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/folders?last=&token='+token
-    }).done(function(data) {
-	   tree = {'id': 0, 'name': '<i class="fa fa-home"></i>', 'folders': data.folders};
-//	   console.log(JSON.stringify(tree));
-    // Fake
-//    tree = {
-//	   'id': 1,
-//	   'name': '<i class="fa fa-home"></i>',
-//	   'folders': [
-//		  {
-//			 'id': 2,
-//			 'name': 'Sciences',
-//			 'folders': [
-//				{
-//				    'id': 3,
-//				    'name': 'Biologie',
-//				    'folders': [
-//					   {
-//						  'id': 12,
-//						  'name': 'Neurologie',
-//						  'folders': []
-//					   }
-//				    ]
-//				},
-//				{
-//				    'id': 4,
-//				    'name': 'Astrophysique',
-//				    'folders': [
-//					   {
-//						  'id': 8,
-//						  'name': 'Cosmologie',
-//						  'folders': [
-//							 {
-//								'id': 10,
-//								'name': 'Système solaire',
-//								'folders': []
-//							 }
-//						  ]
-//					   },
-//					   {
-//						  'id': 9,
-//						  'name': 'Trous noirs',
-//						  'folders': []
-//					   }
-//				    ]
-//				},
-//				{
-//				    'id': 5,
-//				    'name': 'Mathématiques',
-//				    'folders': []
-//				}
-//			 ]
-//		  },
-//		  {
-//			 'id': 6,
-//			 'name': 'Actualités',
-//			 'folders': [
-//				{
-//				    'id': 11,
-//				    'name': 'Monde',
-//				    'folders': []
-//				}
-//			 ]
-//		  },
-//		  {
-//			 'id': 7,
-//			 'name': 'Bandes-dessinées',
-//			 'folders': [
-//				{
-//				    'id': 13,
-//				    'name': 'Comics',
-//				    'folders': []
-//				}
-//			 ]
-//		  }
-//	   ]
-//    };
-	   currentFolder = {'id': 0, 'name': '<i class="fa fa-home"></i>'};
-	   displayFolders();
-	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
+    var url = null;
+    chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+	   url = tabs[0].url;
+	   // Get global tree from database
+	   $.when(
+
+		  $.ajax({
+			 type: "GET",
+			 url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/folders?last=&token='+token
+		  }).done(function(data) {
+			 tree = {'id': 0, 'name': '<i class="fa fa-home"></i>', 'folders': data.folders};
+		  }),
+
+		  $.ajax({
+			 type: "GET",
+			 url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/folder?url='+encodeURIComponent(url)+'&token='+token
+		  }).done(function(data) {
+			 if (data.id === null)
+				currentFolder = {'id': 0, 'name': '<i class="fa fa-home"></i>'};
+			 else
+				currentFolder = data;
+		  })
+
+	   ).then(function() {
+		  displayFolders();
+		  displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
+	   });
     });
     
     $(document).on("click", ".goFolder", function() { 
 	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
 	   displayFolders();
 	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
+    });
+    $(document).on("keypress", "#addFolder", function(e) { 
+	   if(e.which === 13) {
+		  var name = $(this).val();
+		  
+	   }
     });
 });
 
