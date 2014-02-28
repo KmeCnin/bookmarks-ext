@@ -1,9 +1,9 @@
 var tree = null;
 var currentFolder = null;
+var url = null;
+var token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
 $(document).ready(function() {
     // Hard token
-    var token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
-    var url = null;
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
 	   url = tabs[0].url;
 	   // Get global tree from database
@@ -28,12 +28,17 @@ $(document).ready(function() {
 
 	   ).then(function() {
 		  displayFolders();
-		  displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
+		  displayBreadcrumb(getBreadcrumb(tree, parseInt(currentFolder.id), []));
 	   });
     });
     
     $(document).on("click", ".goFolder", function() { 
 	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
+	   $.ajax({
+		  type: "POST",
+		  url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/move?token='+token,
+		  data: { url: url, folder_id: currentFolder.id }
+	   });
 	   displayFolders();
 	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
     });
