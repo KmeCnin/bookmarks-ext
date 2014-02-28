@@ -3,7 +3,49 @@ var currentFolder = null;
 var url = null;
 var token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
 $(document).ready(function() {
-    // Hard token
+    
+    // Initialize
+    init();
+    
+    // Change folder
+    $(document).on("click", ".goFolder", function() { 
+	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
+	   $.ajax({
+		  type: "POST",
+		  url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/move?token='+token,
+		  data: { url: url, folder_id: currentFolder.id }
+	   });
+	   displayFolders();
+	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
+    });
+    
+    // Add Folder
+    $(document).on("keypress", "#addFolder", function(e) { 
+	   if(e.which === 13) {
+		  var name = $(this).val();
+		  $(this).val('');
+		  // Creating new folder
+		  $.ajax({
+			 type: "POST",
+			 url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/folders?token='+token,
+			 data: { name: name, parent_id: currentFolder.id }
+		  }).done(function(lastInsertId) {
+			 // Setting link to the new folder created
+			 $.ajax({
+				type: "POST",
+				url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/move?token='+token,
+				data: { url: url, folder_id: lastInsertId }
+			 }).done(function() {
+				// Displaying changes
+				init();
+			 });
+		  });
+	   }
+    });
+    
+});
+
+function init() {
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
 	   url = tabs[0].url;
 	   // Get global tree from database
@@ -31,24 +73,7 @@ $(document).ready(function() {
 		  displayBreadcrumb(getBreadcrumb(tree, parseInt(currentFolder.id), []));
 	   });
     });
-    
-    $(document).on("click", ".goFolder", function() { 
-	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
-	   $.ajax({
-		  type: "POST",
-		  url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/move?token='+token,
-		  data: { url: url, folder_id: currentFolder.id }
-	   });
-	   displayFolders();
-	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
-    });
-    $(document).on("keypress", "#addFolder", function(e) { 
-	   if(e.which === 13) {
-		  var name = $(this).val();
-		  
-	   }
-    });
-});
+}
 
 function displayFolders() {
     $('.folder').remove();
