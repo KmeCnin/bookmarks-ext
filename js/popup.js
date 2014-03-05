@@ -1,7 +1,11 @@
 var tree = null;
 var currentFolder = null;
 var url = null;
-var token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
+var token = false;
+//token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
+if (!localStorage.getItem('token')) { // Redirection vers Login
+    window.location.href = 'login.html';
+}
 $(document).ready(function() {
     
     // Initialize
@@ -43,10 +47,16 @@ $(document).ready(function() {
 	   }
     });
     
+    // Logout
+    $(document).on('click', '#logout', function() {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+    });
 });
 
 function init() {
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
+           token = localStorage.getItem('token');
 	   url = tabs[0].url;
 	   // Get global tree from database
 	   $.when(
