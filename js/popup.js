@@ -3,7 +3,7 @@ var currentFolder = null;
 var url = null;
 var token = false;
 //token = '1251c7c2c9f48e2e8ff80a77c5ec103c';
-if (!localStorage.getItem('token')) { // Redirection vers Login
+if (!localStorage.getItem('token')) { // Redirect to Login
     window.location.href = 'login.html';
 }
 $(document).ready(function() {
@@ -56,7 +56,7 @@ $(document).ready(function() {
 
 function init() {
     chrome.tabs.query({currentWindow: true, active: true}, function(tabs){
-           token = localStorage.getItem('token');
+	   token = localStorage.getItem('token');
 	   url = tabs[0].url;
 	   // Get global tree from database
 	   $.when(
@@ -87,23 +87,23 @@ function init() {
 
 function displayFolders() {
     $('.folder').remove();
-    var folders = getChildrenFromCurrentFolder(tree, currentFolder.id);
-    $('#currentFolder').html(currentFolder.name);
+    var folders = getChildrenFromCurrentFolder(tree, parseInt(currentFolder.id));
     if (folders !== null)
 	   for (var i = folders.length-1; i >= 0; i--)
-		  $('#folderWrapper').prepend('<div data-id="'+folders[i]['id']+'" class="btn folder goFolder">'+folders[i]['name']+'</div>');
+		  $('#folderWrapper').prepend('<li data-id="'+folders[i]['id']+'" class="folder goFolder"><a>'+folders[i]['name']+'</a></li>');
 //    console.log(getBreadcrumb(tree, currentFolder.id, []));
 }
 
 function displayBreadcrumb(breadcrumb) {
     // Display the breadcrumb from root to current folder
-    $('.breadcrumb').html('');
+    $('#breadcrumb').html('Page saved in ');
     for (var i = 0; i < breadcrumb.length; i++) {
 	   if (i === breadcrumb.length-1)
-		  $('.breadcrumb').append('<li class="active">'+breadcrumb[i].name+'</li>');
+		  $('#breadcrumb').append(''+breadcrumb[i].name+'');
 	   else
-		  $('.breadcrumb').append('<li><a data-id="'+breadcrumb[i].id+'" class="goFolder">'+breadcrumb[i].name+'</a> <span class="divider">/</span></li>');
+		  $('#breadcrumb').append('<a data-id="'+breadcrumb[i].id+'" class="goFolder">'+breadcrumb[i].name+'</a> / ');
     }
+//    $('#breadcrumb').append(' <i style="color:#2ecc71;" class="fa fa-check"></i>');
 }
 
 function getChildrenFromCurrentFolder(tree, targetFolder) { 

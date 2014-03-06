@@ -8,7 +8,8 @@ $(document).ready(function() {
         authenticate();
     });
 });
-function authenticate() {var username = $('#username').val();
+function authenticate() {
+    var username = $('#username').val();
     var password = $('#password').val();
     $.ajax({
         type: "POST",
