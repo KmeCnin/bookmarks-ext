@@ -25,6 +25,10 @@ body {
     margin-bottom: 10px;
     margin-top: 5px;
     float: right;
+    transition: height 2s;
+}
+#folderWrapper li {
+    transition: visibility 2s;
 }
 #folderWrapper input {
     margin: 0;
@@ -54,7 +58,7 @@ ul li.folder a {
     cursor : pointer;
     /*font-weight: bold;*/
     padding: 5px 12px;
-    transition: background-color 0.5s;
+    transition: background-color 0.5s, color 0.5s;
 }
 ul li.folder a:hover {
     background-color : #ff551a;

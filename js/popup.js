@@ -14,10 +14,13 @@ $(document).ready(function() {
     // Change folder
     $(document).on("click", ".goFolder", function() { 
 	   currentFolder = {'id': parseInt($(this).attr('data-id')), 'name': $(this).html()};
+	   var data = { url: url };	// Root
+           if (currentFolder.id !== 0)	// Other than Root
+               data = { url: url, folder_id: currentFolder.id };
 	   $.ajax({
 		  type: "POST",
 		  url: 'http://dev.pierrechanel-gauthier.com/bookmarks-ws/links/move?token='+token,
-		  data: { url: url, folder_id: currentFolder.id }
+		  data: data
 	   });
 	   displayFolders();
 	   displayBreadcrumb(getBreadcrumb(tree, currentFolder.id, []));
@@ -88,10 +91,16 @@ function init() {
 function displayFolders() {
     $('.folder').remove();
     var folders = getChildrenFromCurrentFolder(tree, parseInt(currentFolder.id));
-    if (folders !== null)
-	   for (var i = folders.length-1; i >= 0; i--)
-		  $('#folderWrapper').prepend('<li data-id="'+folders[i]['id']+'" class="folder goFolder"><a>'+folders[i]['name']+'</a></li>');
-//    console.log(getBreadcrumb(tree, currentFolder.id, []));
+    if (folders !== null) {
+//        $('#folderWrapper').css('height', ($('#folderWrapper').height()+50*folders.length) + 'px').delay(2000);
+        $.each(folders, function(i, folder) {
+            setTimeout(function() {
+                $('#folderWrapper').delay(500*i).append('<li data-id="'+folder['id']+'" class="folder goFolder animated bounceInRight"><a>'+folder['name']+'</a></li>');
+            }, i * 10);
+        });
+//        for (var i = folders.length-1; i >= 0; i--)
+//             $('#folderWrapper').delay(-500*i).prepend('<li data-id="'+folders[i]['id']+'" class="folder goFolder animated bounceInRight"><a>'+folders[i]['name']+'</a></li>');
+    }
 }
 
 function displayBreadcrumb(breadcrumb) {
