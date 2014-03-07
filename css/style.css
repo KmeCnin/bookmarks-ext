@@ -7,6 +7,7 @@
     src: url(../ressources/Roboto-Bold.ttf);
     font-weight: bold;
 }
+
 body {
     margin : 0;
     padding : 0;
@@ -25,7 +26,6 @@ body {
     margin-bottom: 10px;
     margin-top: 5px;
     float: right;
-    transition: height 2s;
 }
 #folderWrapper li {
     transition: visibility 2s;
