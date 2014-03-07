@@ -88,18 +88,30 @@ function init() {
     });
 }
 
+function cleanFolders(folders) {
+    var foldersCleaned = [];
+    $.each(folders, function(i, folder) {
+	foldersCleaned.push({'id': folder.id, 'name': folder.name});
+    });
+    return foldersCleaned.reverse();
+}
+
 function displayFolders() {
-    $('.folder').remove();
-    var folders = getChildrenFromCurrentFolder(tree, parseInt(currentFolder.id));
-    if (folders !== null) {
-//        $('#folderWrapper').css('height', ($('#folderWrapper').height()+50*folders.length) + 'px').delay(2000);
-        $.each(folders, function(i, folder) {
-            setTimeout(function() {
-                $('#folderWrapper').delay(500*i).append('<li data-id="'+folder['id']+'" class="folder goFolder animated bounceInRight"><a>'+folder['name']+'</a></li>');
-            }, i * 10);
-        });
-//        for (var i = folders.length-1; i >= 0; i--)
-//             $('#folderWrapper').delay(-500*i).prepend('<li data-id="'+folders[i]['id']+'" class="folder goFolder animated bounceInRight"><a>'+folders[i]['name']+'</a></li>');
+    var folders = cleanFolders(getChildrenFromCurrentFolder(tree, parseInt(currentFolder.id)));
+    if ($('.folder').length > 0) { // If some folders are already displayed
+	$('.folder').removeClass('bounceInRight').addClass('bounceOutLeft'); // Old folders leave
+	$('.folder').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() { // On end of animation
+	    $('.folder').remove();
+	    if (folders.length > 0) {
+		$.each(folders, function(i, folder) {
+		    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated bounceInRight"><a>'+folder['name']+'</a></li>');
+		});
+	    }
+	});
+    } else if (folders.length > 0) {
+	$.each(folders, function(i, folder) {
+	    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated bounceInRight"><a>'+folder['name']+'</a></li>');
+	});
     }
 }
 
