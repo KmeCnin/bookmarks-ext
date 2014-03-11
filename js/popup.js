@@ -98,23 +98,27 @@ function cleanFolders(folders) {
 
 function displayFolders() {
     var folders = cleanFolders(getChildrenFromCurrentFolder(tree, parseInt(currentFolder.id)));
-    var animIn = 'slideInDown';
-    var animOut = 'slideOutUp';
-    if ($('.folder').length > 0) { // If some folders are already displayed
-	$('.folder').removeClass(animIn).addClass(animOut); // Old folders leave
-	$('.folder').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() { // On end of animation
-	    $('.folder').remove();
-	    if (folders.length > 0) {
-		$.each(folders, function(i, folder) {
-		    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated '+animIn+'"><a>'+folder['name']+'</a></li>');
-		});
-	    }
-	});
-    } else if (folders.length > 0) {
-	$.each(folders, function(i, folder) {
-	    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated '+animIn+'"><a>'+folder['name']+'</a></li>');
-	});
-    }
+    $('.folder').remove();
+    $.each(folders, function(i, folder) {
+	$('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder"><a>'+folder['name']+'</a></li>');
+    });
+//    var animIn = 'slideInDown';
+//    var animOut = 'slideOutUp';
+//    if ($('.folder').length > 0) { // If some folders are already displayed
+//	$('.folder').removeClass(animIn).addClass(animOut); // Old folders leave
+//	$('.folder').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function() { // On end of animation
+//	    $('.folder').remove();
+//	    if (folders.length > 0) {
+//		$.each(folders, function(i, folder) {
+//		    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated '+animIn+'"><a>'+folder['name']+'</a></li>');
+//		});
+//	    }
+//	});
+//    } else if (folders.length > 0) {
+//	$.each(folders, function(i, folder) {
+//	    $('#folderWrapper').prepend('<li data-id="'+folder['id']+'" class="folder goFolder animated '+animIn+'"><a>'+folder['name']+'</a></li>');
+//	});
+//    }
 }
 
 function displayBreadcrumb(breadcrumb) {
